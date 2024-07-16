@@ -8,37 +8,23 @@ import { UserInterface } from "../models/user.model";
 class UserController {
     static UserLoginAsync = async (req: Request, res: Response) => {
         const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            ObjectResult.SendBadRequest(res, {
-                message: "Invalid parameters!",
-                errors: errors.array()
-            });
-            return;
-        }
+        if (!errors.isEmpty()) return ObjectResult.SendBadRequest(res, { message: "Invalid parameters!", errors: errors.array() });
 
         const { userName, password } = req.body;
         const user = await UserService.LoginUserAsync(userName, password);
 
-        if (user != null) {
-            const userToReturn = JSON.parse(JSON.stringify(user));
-            delete userToReturn.Password;
-            userToReturn.token = GetNewToken(user);
-            ObjectResult.SendOk(res, userToReturn);
-            return;
-        }
+        if (!user) return ObjectResult.SendNotFound(res, "Datos inválidos!");
 
-        ObjectResult.SendNotFound(res, "Datos inválidos!");
+        const userToReturn = JSON.parse(JSON.stringify(user));
+        delete userToReturn.Password;
+        userToReturn.token = GetNewToken(user);
+
+        return ObjectResult.SendOk(res, userToReturn);
     };
 
     static UserCreateAsync = async (req: Request, res: Response) => {
         const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            ObjectResult.SendBadRequest(res, {
-                message: "Invalid parameters!",
-                errors: errors.array()
-            });
-            return;
-        }
+        if (!errors.isEmpty()) return ObjectResult.SendBadRequest(res, { message: "Invalid parameters!", errors: errors.array() });
 
         const body: UserInterface = req.body;
         const queryResult = await UserService.CreateUserAsync(body);
