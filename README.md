@@ -1,6 +1,6 @@
-# Wqrl Ecommerce API
+# wqrld Ecommerce API
 
-Bienvenido al proyecto Wqrl Ecommerce API, una API para gestionar un sistema de comercio electrónico.
+Bienvenido al proyecto wqrld Ecommerce API, una API para gestionar un sistema de comercio electrónico.
 
 ## Requisitos
 
@@ -14,8 +14,8 @@ Antes de comenzar, asegúrate de tener instalados los siguientes programas:
 1. Clona este repositorio en tu máquina local:
 
    ```bash
-   git clone https://github.com/LautaroG2020/wqrl-ecommerce-api.git
-   cd wqrl-ecommerce-api
+   git clone https://github.com/LautaroG2020/wqrld-ecommerce-api.git
+   cd wqrld-ecommerce-api
    ```
 
 2. Instala las dependencias del proyecto:
