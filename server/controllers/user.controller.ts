@@ -21,7 +21,7 @@ class UserController {
 
         if (user != null) {
             const userToReturn = JSON.parse(JSON.stringify(user));
-            delete userToReturn.Pass;
+            delete userToReturn.Password;
             userToReturn.token = GetNewToken(user);
             ObjectResult.SendOk(res, userToReturn);
             return;
