@@ -26,7 +26,7 @@ Antes de comenzar, asegúrate de tener instalados los siguientes programas:
 3. Copia el archivo .env.example y renómbralo a .env, luego completa las variables necesarias.
 
 ## Uso
-Ejecuta:
+1. Ejecuta:
 
     ```bash
     npm run dev
