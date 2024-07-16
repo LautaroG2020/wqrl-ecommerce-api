@@ -1,0 +1,47 @@
+{
+    "env": {
+        "es2021": true,
+        "node": true,
+        "jest/globals": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    },
+    "plugins": [
+        "@typescript-eslint",
+        "jest"
+    ],
+    "rules": {
+        "semi": [
+            "error",
+            "always"
+        ],
+        "no-undef": "error",
+        "jest/no-focused-tests": "error",
+        "jest/no-identical-title": "error",
+        "jest/prefer-to-have-length": "warn",
+        "jest/valid-expect": "error",
+        // "jest/no-undef": "error", // Activa las reglas específicas de Jest
+        "no-irregular-whitespace": "off",
+        "prefer-const": "warn",
+        "no-self-assign": "warn",
+        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/no-var-requires": "off", // Desactiva el error "@typescript-eslint/no-var-requires"
+        "@typescript-eslint/no-explicit-any": "off", // Desactiva la regla
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 1
+            }
+        ]
+    }
+}

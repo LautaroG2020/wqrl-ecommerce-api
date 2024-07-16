@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "target": "ES6", // O un nivel superior como ES2020
+        "module": "commonjs", // Cambia a "ESNext" si prefieres ES Modules
+        "outDir": "./dist",
+        "rootDir": "./server",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "include": [
+        "server/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
