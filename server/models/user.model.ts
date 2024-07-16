@@ -1,6 +1,7 @@
 import connection from "../data/database-config";
 import { GetSafeString } from "../utils/functions.utils";
 import { RowDataPacket, ResultSetHeader } from "mysql2";
+import { EncryptPasswordAsync } from "../helpers/bcrypt.helper";
 
 interface UserInterface {
     name: string;
@@ -41,12 +42,13 @@ class User {
 
     static CreateUserAsync = async (userData: UserInterface) => {
         const { name, email, password, roleId } = userData;
+        const bcryptedPassword = await EncryptPasswordAsync(password);
         const query = `
                 INSERT INTO e_commerce.users (name, email, password, roleId)
                 VALUES (?, ?, ?, ?)
          `;
 
-        return connection.query<ResultSetHeader>(query, [name, email, password, roleId])
+        return connection.query<ResultSetHeader>(query, [name, email, bcryptedPassword, roleId])
             .then(([result]) => {
                 return result.affectedRows;
             })
