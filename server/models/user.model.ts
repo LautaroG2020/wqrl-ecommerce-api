@@ -9,6 +9,11 @@ interface UserInterface {
     password: string;
     roleId: number;
 }
+const Roles = {
+    Admin: 1,
+    Bussines: 2,
+    Customer: 3
+};
 
 class User {
     Name: string = "";
@@ -61,5 +66,6 @@ class User {
 
 export {
     User,
-    UserInterface
+    UserInterface,
+    Roles
 };
