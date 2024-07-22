@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { body, validationResult } from "express-validator";
 import { ObjectResult } from "../helpers/object-result";
-import { UserService } from "../services/user.services";
+import { UserService } from "../services/users.services";
 import { GetNewToken } from "../helpers/jwt.helper";
 import { UserInterface } from "../models/user.model";
 
