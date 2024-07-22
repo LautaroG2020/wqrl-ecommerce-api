@@ -20,6 +20,18 @@ class UserService {
 
         return queryResult;
     };
+
+    static UpdateUserAsync = async (userData: UserInterface) => {
+        const queryResult = await User.UpdateUserAsync(userData);
+
+        return queryResult;
+    };
+
+    static DeleteUserAsync = async (userId: number) => {
+        const queryResult = await User.DeleteUserAsync(userId);
+
+        return queryResult;
+    };
 }
 
 export { UserService };

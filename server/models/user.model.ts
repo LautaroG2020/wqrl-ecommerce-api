@@ -5,6 +5,7 @@ import { EncryptPasswordAsync } from "../helpers/bcrypt.helper";
 import { CacheObjectManager } from "../cache/utils/cache-object-manager.model";
 
 interface UserInterface {
+    id: number;
     name: string;
     email: string;
     password: string;
@@ -21,6 +22,7 @@ const periodicCache = new CacheObjectManager();
 periodicCache.SetResetCacheEveryDay();
 
 class User {
+    IdUser: number = 0;
     Name: string = "";
     Email: string | undefined = "";
     Password: string = "";
@@ -29,6 +31,7 @@ class User {
     constructor(data: UserInterface) {
         if (data == null) return;
 
+        this.IdUser = data.id;
         this.Name = GetSafeString(data.name);
         this.Email = GetSafeString(data.email);
         this.Password = GetSafeString(data.password);
@@ -42,9 +45,7 @@ class User {
         if (cachedObject != null)
             return cachedObject;
 
-        const query = `
-            SELECT * FROM e_commerce.users
-        `;
+        const query = "SELECT * FROM e_commerce.users WHERE deletionDate IS NULL";
 
         const [rows] = await connection.query<RowDataPacket[]>(query);
 
@@ -67,6 +68,44 @@ class User {
          `;
 
         return connection.query<ResultSetHeader>(query, [name, email, bcryptedPassword, roleId])
+            .then(([result]) => {
+                periodicCache.DeleteObjectByKey("GetAllUsersAsync");
+                return result.affectedRows;
+            })
+            .catch(error => {
+                console.error(`Error al ejecutar la consulta: ${error.message}`);
+                return 0;
+            });
+    };
+
+    static UpdateUserAsync = async (userData: UserInterface) => {
+        const { name, email, password, roleId, id } = userData;
+        const bcryptedPassword = await EncryptPasswordAsync(password);
+        const query = `
+                UPDATE e_commerce.users
+                SET name = ?, email = ?, password = ?, roleId = ?
+                WHERE id = ?
+         `;
+
+        return connection.query<ResultSetHeader>(query, [name, email, bcryptedPassword, roleId, id])
+            .then(([result]) => {
+                periodicCache.DeleteObjectByKey("GetAllUsersAsync");
+                return result.affectedRows;
+            })
+            .catch(error => {
+                console.error(`Error al ejecutar la consulta: ${error.message}`);
+                return 0;
+            });
+    };
+
+    static DeleteUserAsync = async (id: number) => {
+        const query = `
+                UPDATE e_commerce.users
+                SET deletionDate = NOW()
+                WHERE id = ?
+         `;
+
+        return connection.query<ResultSetHeader>(query, [id])
             .then(([result]) => {
                 periodicCache.DeleteObjectByKey("GetAllUsersAsync");
                 return result.affectedRows;

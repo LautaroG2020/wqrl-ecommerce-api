@@ -8,6 +8,10 @@ const SetupUserRoutes = (app: Express) => {
 
     app.post("/api/v1/users/create", checkAuth([Roles.Admin]), UserController.Validate("create"), UserController.UserCreateAsync);
 
+    app.patch("/api/v1/users/edit", checkAuth(), UserController.UserEditAsync);
+
+    app.delete("/api/v1/users/delete/:id", checkAuth([Roles.Admin]), UserController.DeleteUserAsync);
+
 };
 
 export default SetupUserRoutes;

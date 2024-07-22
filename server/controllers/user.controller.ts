@@ -34,6 +34,29 @@ class UserController {
         return ObjectResult.SendOk(res, "Usuario generado correctamente");
     };
 
+    static UserEditAsync = async (req: Request, res: Response) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) return ObjectResult.SendBadRequest(res, { message: "Invalid parameters!", errors: errors.array() });
+
+        const userData: UserInterface = req.body;
+        const queryResult = await UserService.UpdateUserAsync(userData);
+
+        if (queryResult < 1) return ObjectResult.SendBadRequest(res, "No se pudo actualizar el usuario");
+
+        return ObjectResult.SendOk(res, "Usuario actualizado correctamente");
+    };
+
+    static DeleteUserAsync = async (req: Request, res: Response) => {
+        const userId = parseInt(req.params.id);
+        if (isNaN(userId)) return ObjectResult.SendBadRequest(res, "Invalid parameters!");
+
+        const queryResult = await UserService.DeleteUserAsync(userId);
+
+        if (queryResult < 1) return ObjectResult.SendBadRequest(res, "No se pudo eliminar el usuario");
+
+        return ObjectResult.SendOk(res, "Usuario eliminado correctamente");
+    };
+
     static Validate = (method: string) => {
         switch (method) {
             case "login": {
@@ -48,12 +71,6 @@ class UserController {
                     body("email", "password param should be a valid string").notEmpty(),
                     body("password", "email param should be a valid string").notEmpty(),
                     body("roleId", "roleID param should be a valid number").isNumeric(),
-                ];
-            }
-            case "edit-password": {
-                return [
-                    body("currentPassword", "currentPassword param should be a valid string").notEmpty(),
-                    body("newPassword", "newPassword param should be a valid string").notEmpty(),
                 ];
             }
             default: {
