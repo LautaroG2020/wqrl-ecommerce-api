@@ -13,7 +13,7 @@
     "lint:fix": "eslint ./server/**/*.{js,ts} --fix"
   },
   "keywords": [],
-  "author": "",
+  "author": "WqrldPass",
   "license": "ISC",
   "dependencies": {
     "@types/bcrypt": "^5.0.2",

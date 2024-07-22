@@ -1,5 +1,5 @@
 import connection from "../data/database-config";
-import { RowDataPacket } from "mysql2";
+import { ResultSetHeader, RowDataPacket } from "mysql2";
 import { CacheObjectManager } from "../cache/utils/cache-object-manager.model";
 
 interface ProductInterface {
@@ -109,6 +109,20 @@ class Product {
             deletionDate: record.deletionDate
         };
         return new Product(productData);
+    };
+
+    static DeleteProductAsync = async (id: number) => {
+        const query = `
+            UPDATE e_commerce.products
+            SET deletionDate = NOW()
+            WHERE id = ?
+        `;
+
+        const [result] = await connection.query<ResultSetHeader>(query, [id]);
+
+        if (result.affectedRows == 0) return false;
+
+        return true;
     };
 }
 
