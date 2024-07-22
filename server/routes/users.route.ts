@@ -1,7 +1,7 @@
 import { Express } from "express";
 import { Roles } from "../models/user.model";
 import { checkAuth } from "../middlewares/auth.middleware";
-import UserController from "../controllers/user.controller";
+import UserController from "../controllers/users.controller";
 
 const SetupUserRoutes = (app: Express) => {
     app.post("/api/v1/users/login", UserController.Validate("login"), UserController.UserLoginAsync);
