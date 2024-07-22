@@ -10,7 +10,7 @@
         "statusBar.background": "#003366", // Azul oscuro
         "statusBar.foreground": "#ffffff", // Blanco
         "statusBarItem.hoverBackground": "#004080", // Azul marino
-        "titleBar.activeBackground": "#003d66", // Azul oscuro
+        //"titleBar.activeBackground": "#003d66", // Azul oscuro
         "titleBar.activeForeground": "#ffffff", // Blanco
         "titleBar.inactiveBackground": "#003d66", // Azul oscuro
         "titleBar.inactiveForeground": "#c0c0c0" // Gris claro
