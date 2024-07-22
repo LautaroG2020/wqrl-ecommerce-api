@@ -2,6 +2,7 @@ import connection from "../data/database-config";
 import { GetSafeString } from "../utils/functions.utils";
 import { RowDataPacket, ResultSetHeader } from "mysql2";
 import { EncryptPasswordAsync } from "../helpers/bcrypt.helper";
+import { CacheObjectManager } from "../cache/utils/cache-object-manager.model";
 
 interface UserInterface {
     name: string;
@@ -9,11 +10,15 @@ interface UserInterface {
     password: string;
     roleId: number;
 }
+
 const Roles = {
     Admin: 1,
     Bussines: 2,
     Customer: 3
 };
+
+const periodicCache = new CacheObjectManager();
+periodicCache.SetResetCacheEveryDay();
 
 class User {
     Name: string = "";
@@ -30,7 +35,13 @@ class User {
         this.RoleId = data.roleId;
     }
 
-    static GetUsersFromDBAsync = async () => {
+    static GetUsersAsync = async () => {
+        const cacheKey = "GetAllUsersAsync";
+        const cachedObject = periodicCache.TryGetCachedObject<User[]>(cacheKey);
+
+        if (cachedObject != null)
+            return cachedObject;
+
         const query = `
             SELECT * FROM e_commerce.users
         `;
@@ -41,6 +52,8 @@ class User {
             const user = new User(record as UserInterface);
             return user;
         });
+
+        periodicCache.SaveObject(cacheKey, result);
 
         return result;
     };
@@ -55,6 +68,7 @@ class User {
 
         return connection.query<ResultSetHeader>(query, [name, email, bcryptedPassword, roleId])
             .then(([result]) => {
+                periodicCache.DeleteObjectByKey("GetAllUsersAsync");
                 return result.affectedRows;
             })
             .catch(error => {

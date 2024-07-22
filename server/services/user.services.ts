@@ -1,12 +1,12 @@
 import * as bcrypt from "../helpers/bcrypt.helper";
-import { UsersCache } from "../cache/user.cache";
 import { User, UserInterface } from "../models/user.model";
 class UserService {
 
     static LoginUserAsync = async (userName: string, password: string) => {
         if (userName == null || password == null) return null;
 
-        const user = (await UsersCache.GetAllUsersAsync())?.find(u => u.Name == userName);
+        const users = await User.GetUsersAsync();
+        const user = users.find(u => u.Name === userName);
         if (!user) return null;
 
         const result = await bcrypt.ComparePasswords(password, user.Password ?? "");
